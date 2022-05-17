@@ -4,18 +4,18 @@ class Orders extends Dbh {
     // Create Order
     public function createOrder($newOrder) {
         // Deconstruct the new Order
-        $quote_id = $newOrder->quote_id;
-        $payment_id = $newOrder->payment_id;
-        $order_date = $newOrder->order_date;
-        $order_status_id = $newOrder->order_status_id;
+        $quoteId = $newOrder->quote_id;
+        $paymentId = $newOrder->payment_id;
+        $orderDate = $newOrder->order_date;
+        $orderStatusId = $newOrder->order_status_id;
 
         $sql = "INSERT INTO orders (quote_id, payment_id, order_date, order_status_id) VALUES (?, ?, ?, ?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$quote_id, $payment_id, $order_date, $order_status_id]);
+        $stmt->execute([$quoteId, $paymentId, $orderDate, $orderStatusId]);
     }
 
     // Read Order
-    public function getOrderByID($order_id) {
+    public function getOrderByID($orderId) {
         $sql = "SELECT\n"
         . "`orders`.`order_id`,\n"
         . "`orders`.`order_date`,\n"
@@ -42,7 +42,7 @@ class Orders extends Dbh {
         . "WHERE `orders`.order_id=?";
 
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$order_id]);
+        $stmt->execute([$orderId]);
         $order = $stmt->fetch();
 
         if ($order == false) {
@@ -52,7 +52,7 @@ class Orders extends Dbh {
         }
     }
 
-    public function getOrdersWithStatusID($StatusID) {
+    public function getOrdersWithStatusID($statusId) {
         $sql = "SELECT\n"
         . "`orders`.`order_id`,\n"
         . "`orders`.`order_date`,\n"
@@ -79,11 +79,11 @@ class Orders extends Dbh {
         . "WHERE `orders`.order_status_id=?";
 
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$StatusID]);
+        $stmt->execute([$statusId]);
         $orders = $stmt->fetchAll();
 
         if ($orders == false) {
-            echo "No orders found with that StatusID.";
+            echo "No orders found with that status_id.";
         } else {
             return $orders;
         }
@@ -125,22 +125,22 @@ class Orders extends Dbh {
     }
 
     // Update Order
-    public function updateOrder($order_id, $updatedOrderData) {
+    public function updateOrder($orderId, $updatedOrderData) {
         // Deconstruct the updated Order object
-        $quote_id = $updatedOrderData->quote_id;
-        $payment_id = $updatedOrderData->payment_id;
-        $order_date = $updatedOrderData->order_date;
-        $order_status_id = $updatedOrderData->order_status_id;
+        $quoteId = $updatedOrderData->quote_id;
+        $paymentId = $updatedOrderData->payment_id;
+        $orderDate = $updatedOrderData->order_date;
+        $orderStatusId = $updatedOrderData->order_status_id;
 
-        $sql = "UPDATE orders SET quote_id='$quote_id', payment_id='$payment_id', order_date='$order_date', order_status_id='$order_status_id' WHERE order_id=? LIMIT 1";
+        $sql = "UPDATE orders SET quote_id='$quoteId', payment_id='$paymentId', order_date='$orderDate', order_status_id='$orderStatusId' WHERE order_id=? LIMIT 1";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$order_id]);
+        $stmt->execute([$orderId]);
     }
 
     // Delete Order
-    public function deleteOrder($order_id) {
+    public function deleteOrder($orderId) {
         $sql = "DELETE FROM orders WHERE order_id=? LIMIT 1";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$order_id]);
+        $stmt->execute([$orderId]);
     }
 }

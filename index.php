@@ -33,7 +33,7 @@
         'order_date' => '1111-01-01',
         'order_status_id' => '1',
     ];
-    $orders->updateOrder(5, $updateOrderData);
+    $orders->updateOrder(15, $updateOrderData);
 
     $newOrder = (object) [
         'quote_id' => '3',
@@ -42,7 +42,7 @@
         'order_status_id' => '2',
     ];
     $orders->createOrder($newOrder);
-    $orders->deleteOrder(11);
+    $orders->deleteOrder(16);
     ?>
 </body>
 </html>
