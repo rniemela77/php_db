@@ -18,7 +18,7 @@
     print_r($orders->getOrders());
     echo '<br/>';
 
-    echo '<h1>getOrderByID(5)</h1>';
+    echo '<h1>getOrderByID(3)</h1>';
     print_r($orders->getOrderByID(3));
     echo '<br/>';
     
@@ -34,9 +34,6 @@
         'OrderStatusID' => '1',
     ];
     $orders->updateOrder(5, $updateOrderData);
-
-    echo '<h1>getOrderData(5)</h1>';
-    print_r($orders->getOrders());
 
     $newOrder = (object) [
         'QuoteID' => '3',
