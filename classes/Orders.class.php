@@ -4,49 +4,49 @@ class Orders extends Dbh {
     // Create Order
     public function createOrder($newOrder) {
         // Deconstruct the new Order
-        $QuoteID = $newOrder->QuoteID;
-        $PaymentID = $newOrder->PaymentID;
-        $OrderDate = $newOrder->OrderDate;
-        $OrderStatusID = $newOrder->OrderStatusID;
+        $quote_id = $newOrder->quote_id;
+        $payment_id = $newOrder->payment_id;
+        $order_date = $newOrder->order_date;
+        $order_status_id = $newOrder->order_status_id;
 
-        $sql = "INSERT INTO orders (QuoteID, PaymentID, OrderDate, OrderStatusID) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO orders (quote_id, payment_id, order_date, order_status_id) VALUES (?, ?, ?, ?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$QuoteID, $PaymentID, $OrderDate, $OrderStatusID]);
+        $stmt->execute([$quote_id, $payment_id, $order_date, $order_status_id]);
     }
 
     // Read Order
-    public function getOrderByID($OrderID) {
+    public function getOrderByID($order_id) {
         $sql = "SELECT\n"
-        . "`orders`.`OrderID`,\n"
-        . "`orders`.`OrderDate`,\n"
-        . "`quotes`.`QuoteDate`,\n"
-        . "`quotes`.`Amount`,\n"
-        . "`quotes`.`Details`,\n"
-        . "`service_type`.`ServiceType`,\n"
-        . "`customers`.`firstname`,\n"
-        . "`customers`.`lastname`,\n"
-        . "`customers`.`phone`,\n"
-        . "`customers`.`email`,\n"
-        . "`companies`.`name`,\n"
-        . "`companies`.`address`,\n"
-        . "`payment`.`CardType`,\n"
-        . "`payment`.`CardDetails`,\n"
-        . "`order_status`.`OrderStatusDescription`\n"
+        . "`orders`.`order_id`,\n"
+        . "`orders`.`order_date`,\n"
+        . "`quotes`.`quote_date`,\n"
+        . "`quotes`.`quote_amount`,\n"
+        . "`quotes`.`quote_details`,\n"
+        . "`service_type`.`service_type`,\n"
+        . "`customers`.`customer_fname`,\n"
+        . "`customers`.`customer_lname`,\n"
+        . "`customers`.`customer_phone`,\n"
+        . "`customers`.`customer_email`,\n"
+        . "`companies`.`company_name`,\n"
+        . "`companies`.`company_address`,\n"
+        . "`payment`.`payment_type`,\n"
+        . "`payment`.`payment_details`,\n"
+        . "`order_status`.`order_status_description`\n"
         . "FROM `orders`\n"
-        . "LEFT JOIN `quotes` ON `orders`.`QuoteID` = `quotes`.`QuoteID`\n"
-        . "LEFT JOIN `service_type` ON `quotes`.`ServiceTypeID` = `service_type`.`ServiceTypeID`\n"
-        . "LEFT JOIN `customers` ON `quotes`.`CustomerID` = `customers`.`CustomerID`\n"
-        . "LEFT JOIN `companies` ON `customers`.`CompanyID` = `companies`.`CompanyID`\n"
-        . "LEFT JOIN `payment` ON `orders`.`PaymentID` = `payment`.`PaymentID`\n"
-        . "LEFT JOIN `order_status` ON `orders`.`OrderStatusID` = `order_status`.`OrderStatusID`\n"
-        . "WHERE `orders`.OrderID=?";
+        . "LEFT JOIN `quotes` ON `orders`.`quote_id` = `quotes`.`quote_id`\n"
+        . "LEFT JOIN `service_type` ON `quotes`.`service_type_id` = `service_type`.`service_type_id`\n"
+        . "LEFT JOIN `customers` ON `quotes`.`customer_id` = `customers`.`customer_id`\n"
+        . "LEFT JOIN `companies` ON `customers`.`company_id` = `companies`.`company_id`\n"
+        . "LEFT JOIN `payment` ON `orders`.`payment_id` = `payment`.`payment_id`\n"
+        . "LEFT JOIN `order_status` ON `orders`.`order_status_id` = `order_status`.`order_status_id`\n"
+        . "WHERE `orders`.order_id=?";
 
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$OrderID]);
+        $stmt->execute([$order_id]);
         $order = $stmt->fetch();
 
         if ($order == false) {
-            echo "No order found with that OrderID.";
+            echo "No order found with that order_id.";
         } else {
             return $order;
         }
@@ -54,29 +54,29 @@ class Orders extends Dbh {
 
     public function getOrdersWithStatusID($StatusID) {
         $sql = "SELECT\n"
-        . "`orders`.`OrderID`,\n"
-        . "`orders`.`OrderDate`,\n"
-        . "`quotes`.`QuoteDate`,\n"
-        . "`quotes`.`Amount`,\n"
-        . "`quotes`.`Details`,\n"
-        . "`service_type`.`ServiceType`,\n"
-        . "`customers`.`firstname`,\n"
-        . "`customers`.`lastname`,\n"
-        . "`customers`.`phone`,\n"
-        . "`customers`.`email`,\n"
-        . "`companies`.`name`,\n"
-        . "`companies`.`address`,\n"
-        . "`payment`.`CardType`,\n"
-        . "`payment`.`CardDetails`,\n"
-        . "`order_status`.`OrderStatusDescription`\n"
+        . "`orders`.`order_id`,\n"
+        . "`orders`.`order_date`,\n"
+        . "`quotes`.`quote_date`,\n"
+        . "`quotes`.`quote_amount`,\n"
+        . "`quotes`.`quote_details`,\n"
+        . "`service_type`.`service_type`,\n"
+        . "`customers`.`customer_fname`,\n"
+        . "`customers`.`customer_lname`,\n"
+        . "`customers`.`customer_phone`,\n"
+        . "`customers`.`customer_email`,\n"
+        . "`companies`.`company_name`,\n"
+        . "`companies`.`company_address`,\n"
+        . "`payment`.`payment_type`,\n"
+        . "`payment`.`payment_details`,\n"
+        . "`order_status`.`order_status_description`\n"
         . "FROM `orders`\n"
-        . "LEFT JOIN `quotes` ON `orders`.`QuoteID` = `quotes`.`QuoteID`\n"
-        . "LEFT JOIN `service_type` ON `quotes`.`ServiceTypeID` = `service_type`.`ServiceTypeID`\n"
-        . "LEFT JOIN `customers` ON `quotes`.`CustomerID` = `customers`.`CustomerID`\n"
-        . "LEFT JOIN `companies` ON `customers`.`CompanyID` = `companies`.`CompanyID`\n"
-        . "LEFT JOIN `payment` ON `orders`.`PaymentID` = `payment`.`PaymentID`\n"
-        . "LEFT JOIN `order_status` ON `orders`.`OrderStatusID` = `order_status`.`OrderStatusID`\n"
-        . "WHERE `orders`.OrderStatusID=?";
+        . "LEFT JOIN `quotes` ON `orders`.`quote_id` = `quotes`.`quote_id`\n"
+        . "LEFT JOIN `service_type` ON `quotes`.`service_type_ID` = `service_type`.`service_type_ID`\n"
+        . "LEFT JOIN `customers` ON `quotes`.`customer_id` = `customers`.`customer_id`\n"
+        . "LEFT JOIN `companies` ON `customers`.`company_id` = `companies`.`company_id`\n"
+        . "LEFT JOIN `payment` ON `orders`.`payment_id` = `payment`.`payment_id`\n"
+        . "LEFT JOIN `order_status` ON `orders`.`order_status_id` = `order_status`.`order_status_id`\n"
+        . "WHERE `orders`.order_status_id=?";
 
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute([$StatusID]);
@@ -91,28 +91,28 @@ class Orders extends Dbh {
     
     public function getOrders() {
         $sql = "SELECT\n"
-        . "`orders`.`OrderID`,\n"
-        . "`orders`.`OrderDate`,\n"
-        . "`quotes`.`QuoteDate`,\n"
-        . "`quotes`.`Amount`,\n"
-        . "`quotes`.`Details`,\n"
-        . "`service_type`.`ServiceType`,\n"
-        . "`customers`.`firstname`,\n"
-        . "`customers`.`lastname`,\n"
-        . "`customers`.`phone`,\n"
-        . "`customers`.`email`,\n"
-        . "`companies`.`name`,\n"
-        . "`companies`.`address`,\n"
-        . "`payment`.`CardType`,\n"
-        . "`payment`.`CardDetails`,\n"
-        . "`order_status`.`OrderStatusDescription`\n"
+        . "`orders`.`order_id`,\n"
+        . "`orders`.`order_date`,\n"
+        . "`quotes`.`quote_date`,\n"
+        . "`quotes`.`quote_amount`,\n"
+        . "`quotes`.`quote_details`,\n"
+        . "`service_type`.`service_type`,\n"
+        . "`customers`.`customer_fname`,\n"
+        . "`customers`.`customer_lname`,\n"
+        . "`customers`.`customer_phone`,\n"
+        . "`customers`.`customer_email`,\n"
+        . "`companies`.`company_name`,\n"
+        . "`companies`.`company_address`,\n"
+        . "`payment`.`payment_type`,\n"
+        . "`payment`.`payment_details`,\n"
+        . "`order_status`.`order_status_description`\n"
         . "FROM `orders`\n"
-        . "LEFT JOIN `quotes` ON `orders`.`QuoteID` = `quotes`.`QuoteID`\n"
-        . "LEFT JOIN `service_type` ON `quotes`.`ServiceTypeID` = `service_type`.`ServiceTypeID`\n"
-        . "LEFT JOIN `customers` ON `quotes`.`CustomerID` = `customers`.`CustomerID`\n"
-        . "LEFT JOIN `companies` ON `customers`.`CompanyID` = `companies`.`CompanyID`\n"
-        . "LEFT JOIN `payment` ON `orders`.`PaymentID` = `payment`.`PaymentID`\n"
-        . "LEFT JOIN `order_status` ON `orders`.`OrderStatusID` = `order_status`.`OrderStatusID`;";
+        . "LEFT JOIN `quotes` ON `orders`.`quote_id` = `quotes`.`quote_id`\n"
+        . "LEFT JOIN `service_type` ON `quotes`.`service_type_id` = `service_type`.`service_type_id`\n"
+        . "LEFT JOIN `customers` ON `quotes`.`customer_id` = `customers`.`customer_id`\n"
+        . "LEFT JOIN `companies` ON `customers`.`company_id` = `companies`.`company_id`\n"
+        . "LEFT JOIN `payment` ON `orders`.`payment_id` = `payment`.`payment_id`\n"
+        . "LEFT JOIN `order_status` ON `orders`.`order_status_id` = `order_status`.`order_status_id`;";
 
         $stmt = $this->connect()->query($sql);
         $orders = $stmt->fetchAll();
@@ -125,22 +125,22 @@ class Orders extends Dbh {
     }
 
     // Update Order
-    public function updateOrder($OrderID, $updatedOrderData) {
+    public function updateOrder($order_id, $updatedOrderData) {
         // Deconstruct the updated Order object
-        $QuoteID = $updatedOrderData->QuoteID;
-        $PaymentID = $updatedOrderData->PaymentID;
-        $OrderDate = $updatedOrderData->OrderDate;
-        $OrderStatusID = $updatedOrderData->OrderStatusID;
+        $quote_id = $updatedOrderData->quote_id;
+        $payment_id = $updatedOrderData->payment_id;
+        $order_date = $updatedOrderData->order_date;
+        $order_status_id = $updatedOrderData->order_status_id;
 
-        $sql = "UPDATE orders SET QuoteID='$QuoteID', PaymentID='$PaymentID', OrderDate='$OrderDate', OrderStatusID='$OrderStatusID' WHERE OrderID=? LIMIT 1";
+        $sql = "UPDATE orders SET quote_id='$quote_id', payment_id='$payment_id', order_date='$order_date', order_status_id='$order_status_id' WHERE order_id=? LIMIT 1";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$OrderID]);
+        $stmt->execute([$order_id]);
     }
 
     // Delete Order
-    public function deleteOrder($OrderID) {
-        $sql = "DELETE FROM orders WHERE OrderID=? LIMIT 1";
+    public function deleteOrder($order_id) {
+        $sql = "DELETE FROM orders WHERE order_id=? LIMIT 1";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$OrderID]);
+        $stmt->execute([$order_id]);
     }
 }

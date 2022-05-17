@@ -28,18 +28,18 @@
     echo '<br/>';
 
     $updateOrderData = (object) [
-        'QuoteID' => '1',
-        'PaymentID' => '1',
-        'OrderDate' => '1111-01-01',
-        'OrderStatusID' => '1',
+        'quote_id' => '1',
+        'payment_id' => '1',
+        'order_date' => '1111-01-01',
+        'order_status_id' => '1',
     ];
     $orders->updateOrder(5, $updateOrderData);
 
     $newOrder = (object) [
-        'QuoteID' => '3',
-        'PaymentID' => '2',
-        'OrderDate' => '1119-05-01',
-        'OrderStatusID' => '2',
+        'quote_id' => '3',
+        'payment_id' => '2',
+        'order_date' => '1119-05-01',
+        'order_status_id' => '2',
     ];
     $orders->createOrder($newOrder);
     $orders->deleteOrder(11);
